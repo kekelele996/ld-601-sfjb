@@ -1,3 +1,3 @@
-export function StatCard({ label, value }: { label: string; value: string | number }) {
-  return <div className="stat"><span>{label}</span><strong>{value}</strong></div>;
+export function StatCard({ label, value, tone }: { label: string; value: string | number; tone?: "default" | "danger" }) {
+  return <div className={`stat${tone === "danger" ? " danger" : ""}`}><span>{label}</span><strong>{value}</strong></div>;
 }

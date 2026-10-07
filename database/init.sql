@@ -30,7 +30,10 @@ CREATE TABLE IF NOT EXISTS route_plan (
   risk_level TEXT,
   estimated_minutes TEXT,
   facility_ids TEXT,
-  created_at TEXT
+  created_at TEXT,
+  risk_policy TEXT DEFAULT 'PEAK_HOLD',
+  risk_evaluated_at TEXT,
+  risk_factors TEXT
 );
 
 CREATE TABLE IF NOT EXISTS assistance_request (

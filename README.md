@@ -57,6 +57,18 @@ backend/src/routes, controllers, services, models, repositories, middlewares, co
 - MobilityType: constants/MobilityType、types/MobilityType、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - FacilityStatus: constants/FacilityStatus、types/FacilityStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - AssistanceStatus: constants/AssistanceStatus、types/AssistanceStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
+- RiskLevel（路线风险，新增）: backend/frontend 两侧的 `constants/RiskLevel`、`types/RouteRisk`、`utils/routeRisk`、`models/RoutePlan`、`types/RoutePlan`、`utils/formatters`、风险说明面板 `components/common/RouteRiskPanel`、`hooks/useRouteRisk`、路线服务/控制器/仓库、种子数据与数据库表均有引用。
+- RiskPolicy（风险回落策略，新增）: 两侧 `constants/RiskPolicy`、`types/RouteRisk`、`models/RoutePlan`、`types/RoutePlan`、风险说明面板、`hooks/useRouteRisk`、路线服务。
+- BarrierVerifyStatus / BarrierPriority（障碍上报终态与优先级，新增）: 两侧 `constants/BarrierVerifyStatus`、`constants/BarrierPriority`、`utils/routeRisk`、`utils/formatters`、风险因子说明、障碍工单展示。
+
+## 路线风险是怎么算出来的
+
+- **触发时机**：保存（POST）或重新保存（PATCH）路线时，由后端统一计算；前端不接受手填 `risk_level`，请求里即使携带也会被忽略。
+- **计算输入**：路线选中的设施（巡检状态）+ 这些设施上「还没关掉」的障碍上报（`CLOSED` / `REJECTED` 视为关闭）。
+- **档位映射**：设施 `AVAILABLE→低`、`MAINTENANCE→中`、`BLOCKED→高`；`UNKNOWN`、状态无法识别或设施在巡检记录中查不到，一律按**最保守的高风险**处理。未关闭上报：高优先级→高，其余可识别优先级→中，优先级无法识别→高。路线等级取所有因子的最大值，每个抬级因子记录设施/上报编号、名称、原因和是否决定性。
+- **共用结果**：路线列表、路线详情、风险说明面板（及通行总览的高风险路线卡片）消费同一份 `risk` 结论，面板逐条列出「是哪几个设施、哪条上报把等级抬上去的」。
+- **回落策略：高位保留（PEAK_HOLD）**：在「当场回落」与「保留当初算出的高位」之间，本平台按对出行者更稳妥的一边固定为**高位保留**——设施恢复可用、障碍上报关闭后，已保存路线的等级不自动回落；若当前实时风险反而更高，则按更高的实时值提示。面板同时展示保存时峰值、当前实时评级、两者时间，并明确标注本路线采用的是「高位保留」。
+
 
 ## 为什么会牵一发动全身
 
