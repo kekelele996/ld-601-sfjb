@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import type { RoutePlan } from "../types/RoutePlan";
+import { buildRouteRiskView, type RouteRiskView } from "../utils/routeRisk";
 
-export function useRouteRisk<T>(rows: T[] = []) {
-  const [page, setPage] = useState(1);
-  const pageSize = 8;
-  const pageRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
-  return { page, setPage, pageSize, pageRows, total: rows.length };
+// 路线详情与 RouteRiskPanel 共用这个 hook，保证读到的是同一份风险快照。
+export function useRouteRisk(route: RoutePlan | null | undefined): RouteRiskView | null {
+  return useMemo(() => buildRouteRiskView(route), [route]);
 }

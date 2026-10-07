@@ -57,6 +57,16 @@ backend/src/routes, controllers, services, models, repositories, middlewares, co
 - MobilityType: constants/MobilityType、types/MobilityType、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - FacilityStatus: constants/FacilityStatus、types/FacilityStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - AssistanceStatus: constants/AssistanceStatus、types/AssistanceStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
+- RiskLevel / RiskPolicy: 前后端 constants/RiskLevel、types/RoutePlan、constructors（RoutePlanDtoFactory / RoutePlanConstructor）、后端 services/RouteRiskService 与 RoutePlanService、前端 utils/routeRisk 与 utils/formatters、hooks/useRouteRisk、components/common/RouteRiskPanel、pages/RoutesPage 均有引用。
+- BarrierVerifyStatus: 前后端 constants/BarrierVerifyStatus、types/BarrierReport、种子数据（seed.ts / mocks/seedData.ts）、后端 services/RouteRiskService、前端 utils/routeRisk 的未关闭判定均有引用。
+
+## 路线风险等级规则
+
+保存路线时不再手填 `risk_level`，由系统按路线选中的设施及其未关闭障碍上报自动计算，并把结果（等级 + 抬级来源 + 策略）作为风险快照保存在路线记录上，路线列表、路线详情、风险说明面板（RouteRiskPanel）共读这一份快照：
+
+- 设施状态定基准档（取最高）：AVAILABLE→低、MAINTENANCE→中、BLOCKED→高；状态 UNKNOWN 或设施记录缺失一律按最保守档「严重」计。
+- 未关闭障碍上报（verify_status 非 CLOSED）按数量抬级：1 条 +1 档，≥2 条 +2 档，封顶「严重」。
+- 回落策略取 `STICKY_HIGH`（保留历史高位）：设施恢复可用、上报关闭后等级不当场回落，重新保存时与历史高位取高——对出行者更稳妥，避免设施刚恢复、数据未复核时给出过于乐观的提示。每条路线的风险说明里都会标注所采用的策略，并列出把等级抬上去的设施与上报。
 
 ## 为什么会牵一发动全身
 

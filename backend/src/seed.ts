@@ -70,11 +70,11 @@ export const seed = {
     {
       "id": 1,
       "user_id": 1,
-      "origin_text": "origin text 1",
-      "destination_text": "destination text 1",
-      "route_mode": "route mode 1",
+      "origin_text": "门诊楼一层",
+      "destination_text": "住院部三层",
+      "route_mode": "INDOOR",
       "risk_level": "LOW",
-      "estimated_minutes": "estimated minutes 1",
+      "estimated_minutes": 18,
       "facility_ids": [
         1,
         2
@@ -84,28 +84,27 @@ export const seed = {
     {
       "id": 2,
       "user_id": 2,
-      "origin_text": "origin text 2",
-      "destination_text": "destination text 2",
-      "route_mode": "route mode 2",
+      "origin_text": "地铁站 B 口",
+      "destination_text": "康复中心",
+      "route_mode": "MIXED",
       "risk_level": "MEDIUM",
-      "estimated_minutes": "estimated minutes 2",
+      "estimated_minutes": 25,
       "facility_ids": [
-        1,
-        2
+        2,
+        3
       ],
       "created_at": "2026-06-12T09:00:00Z"
     },
     {
       "id": 3,
       "user_id": 3,
-      "origin_text": "origin text 3",
-      "destination_text": "destination text 3",
-      "route_mode": "route mode 3",
+      "origin_text": "图书馆北门",
+      "destination_text": "无障碍服务台",
+      "route_mode": "OUTDOOR",
       "risk_level": "HIGH",
-      "estimated_minutes": "estimated minutes 3",
+      "estimated_minutes": 12,
       "facility_ids": [
-        1,
-        2
+        3
       ],
       "created_at": "2026-06-13T09:00:00Z"
     }
@@ -150,7 +149,7 @@ export const seed = {
       "barrier_type": "LOW_VISION",
       "description": "description 1",
       "photo_url": "/mock/photo_url-1.png",
-      "verify_status": "BLOCKED",
+      "verify_status": "PENDING",
       "priority": "priority 1"
     },
     {
@@ -160,7 +159,7 @@ export const seed = {
       "barrier_type": "WHEELCHAIR",
       "description": "description 2",
       "photo_url": "/mock/photo_url-2.png",
-      "verify_status": "MAINTENANCE",
+      "verify_status": "VERIFIED",
       "priority": "priority 2"
     },
     {
@@ -170,7 +169,7 @@ export const seed = {
       "barrier_type": "ELDERLY",
       "description": "description 3",
       "photo_url": "/mock/photo_url-3.png",
-      "verify_status": "AVAILABLE",
+      "verify_status": "CLOSED",
       "priority": "priority 3"
     }
   ]
